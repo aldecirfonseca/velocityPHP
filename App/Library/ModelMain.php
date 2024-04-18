@@ -1,7 +1,5 @@
 <?php
 
-// App\Library\ModelMain.php
-
 namespace App\Library;
 
 class ModelMain

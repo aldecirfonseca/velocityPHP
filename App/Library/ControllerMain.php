@@ -5,6 +5,7 @@ namespace App\Library;
 class ControllerMain
 {
     public $dados;
+    public $model;
 
     /**
      * construct
@@ -15,6 +16,15 @@ class ControllerMain
     {
         $this->dados = $dados;
         $this->loadHelper("Ambiente");
+
+        // criando o objeto do model e conectando ao Database
+        $cModel = $dados['model'] . "Model";
+
+        // verifica se o arquivo model existe para ser carrega
+        if (file_exists(".." . DS . "App" . DS . "Model" . DS . $cModel . ".php")) {
+            require_once ".." . DS . "App" . DS . "Model" . DS . $cModel . ".php";
+            $this->model = new $cModel();       // cria o objeto model
+        }
     }
 
     /**
