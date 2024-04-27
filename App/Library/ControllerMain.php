@@ -16,6 +16,7 @@ class ControllerMain
     {
         $this->dados = $dados;
         $this->loadHelper("Ambiente");
+        $this->loadHelper("Crud");
 
         // criando o objeto do model e conectando ao Database
         $cModel = $dados['model'] . "Model";
@@ -70,5 +71,70 @@ class ControllerMain
         if ($exibeCabRodape) {
             require_once $caminho . 'comuns' . DS . "rodape.php";
         }
+    }
+
+    /**
+     * getController
+     *
+     * @return string
+     */
+    public function getController()
+    {
+        return $this->dados['controller'];
+    }
+
+    /**
+     * getAcao
+     *
+     * @return string
+     */
+    public function getAcao()
+    {
+        return $this->dados['acao'];
+    }
+
+    /**
+     * getId
+     *
+     * @return int
+     */
+    public function getId()
+    {  
+        if (isset($this->dados['get']['parametros'])) {
+            $parametros = explode('/', $this->dados['get']['parametros']);
+            return (isset($parametros[3]) ?  $parametros[3] : null);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * getPost
+     *
+     * @return array
+     */
+    public function getPost()
+    {
+        return $this->dados['post'];
+    }
+
+    /**
+     * getGet
+     *
+     * @return array
+     */
+    public function getGet()
+    {
+        return $this->dados['get'];
+    }
+
+    /**
+     * getOutrosParametros
+     *
+     * @return array
+     */
+    public function getOutrosParametros()
+    {
+        return $this->dados['outrosParametros'];
     }
 }

@@ -1,10 +1,16 @@
-<table>
-    <thead>
+<div class="row">
+    <div class="col-12 mb-2">
+        <h2>Categorias</h2>
+    </div>
+</div>
+
+<table class="table table-bordered table-condensed table-striped">
+    <thead class="table-dark">
         <tr>
-            <td>Id</td>
-            <td>Descrição</td>
-            <td>Status</td>
-            <td>Opções</td>
+            <th>Id</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Opções</th>
         </tr>
     </thead>
     <tbody>
@@ -12,11 +18,11 @@
             <tr>
                 <td><?= $categoria["id"] ?></td>
                 <td><?= $categoria["descricao"] ?></td>
-                <td><?= $categoria["statusRegistro"] ?></td>
+                <td><?= getStatus($categoria["statusRegistro"]) ?></td>
                 <td>
-                    <a href="#">Visualizar</a>&nbsp;|&nbsp;
-                    <a href="#">Alterar</a>&nbsp;|&nbsp;
-                    <a href="#">Excluir</a>
+                    <a href="<?= baseUrl() ?>Categoria/form/view/<?= $categoria['id'] ?>" class="btn btn-secondary">Visualizar</a>&nbsp;
+                    <a href="#" class="btn btn-info">Alterar</a>&nbsp;
+                    <a href="#" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
         <?php endforeach; ?>

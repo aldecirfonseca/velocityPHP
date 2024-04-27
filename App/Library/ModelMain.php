@@ -21,4 +21,43 @@ class ModelMain
             $_ENV['DB_PASSWORD']
         );
     }
+
+    /**
+     * getById
+     *
+     * @param int $id 
+     * @return array
+     */
+    public function getById($id)
+    {
+        $rsc = $this->db->dbSelect(
+                            "SELECT * FROM {$this->table} WHERE id = ?",
+                            [$id]
+                        );
+                        
+        if ($this->db->dbNumeroLinhas($rsc) > 0) {
+            return $this->db->dbBuscaArray($rsc);
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * lista
+     *
+     * @param string $orderBy 
+     * @return array
+     */
+    public function lista($orderBy = "id")
+    {
+        $rsc = $this->db->dbSelect(
+                                "SELECT * FROM {$this->table} ORDER BY {$orderBy}"
+                            );
+        
+        if ($this->db->dbNumeroLinhas($rsc) > 0) {
+        return $this->db->dbBuscaArrayAll($rsc);
+        } else {
+        return [];
+        }
+    }
 }

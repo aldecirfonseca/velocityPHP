@@ -4,13 +4,30 @@ use App\Library\ControllerMain;
 
 class  Categoria extends ControllerMain
 {
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index()
     {
-        $dados = [
-            ["id" => 10, "descricao" => "Televisores", "statusRegistro" => "Ativo"],
-            ["id" => 20, "descricao" => "Computadores", "statusRegistro" => "Inativo"]
-        ];
-
-        $this->loadView("restrita/listaCategoria", $dados);
+        $this->loadView("restrita/listaCategoria", $this->model->lista("descricao"));
     }
+
+    /**
+     * form
+     *
+     * @return void
+     */
+    public function form()
+    {
+        $dados = [];
+
+        if ($this->getAcao() != "insert") {
+            $dados = $this->model->getById($this->getId());
+        }
+
+        $this->loadView("restrita/formCategoria", $dados);
+    }
+
 }
