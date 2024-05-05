@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($this->dados as $value): ?>
+        <?php foreach ($aDados as $value): ?>
             <tr>
                 <td><?= $value["id"] ?></td>
                 <td><?= $value["descricao"] ?></td>

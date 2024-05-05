@@ -7,11 +7,11 @@ class Home extends ControllerMain
 {
     public function index()
     {
-        $this->loadView("home");
+        return $this->loadView("home");
     }
 
     public function contato()
     {
-        $this->loadView("contato");
+        return $this->loadView("contato");
     }
 }

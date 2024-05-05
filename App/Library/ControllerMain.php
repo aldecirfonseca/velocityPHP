@@ -53,8 +53,8 @@ class ControllerMain
      */
     public function loadView($nomeView, $dados = [], $exibeCabRodape = true)
     {
-        $this->dados    = $dados;
-        $caminho        = ".." . DS . "App" . DS . "View" . DS;
+        $aDados   = $dados;
+        $caminho = ".." . DS . "App" . DS . "View" . DS;
 
         // carrega o cabeçalho
         if ($exibeCabRodape) {

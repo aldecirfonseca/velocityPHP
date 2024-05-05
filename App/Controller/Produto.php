@@ -11,6 +11,6 @@ class Produto extends ControllerMain
      */
     public function index()
     {
-        $this->loadView("restrita/listaProduto", $this->model->lista("descricao"));
+        return $this->loadView("restrita/listaProduto", $this->model->lista("descricao"));
     }
 }

@@ -11,7 +11,7 @@ class  Categoria extends ControllerMain
      */
     public function index()
     {
-        $this->loadView("restrita/listaCategoria", $this->model->lista("descricao"));
+        return $this->loadView("restrita/listaCategoria", $this->model->lista("descricao"));
     }
 
     /**
@@ -27,7 +27,7 @@ class  Categoria extends ControllerMain
             $dados = $this->model->getById($this->getId());
         }
 
-        $this->loadView("restrita/formCategoria", $dados);
+        return $this->loadView("restrita/formCategoria", $dados);
     }
 
 }

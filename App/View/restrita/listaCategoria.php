@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($this->dados as $categoria): ?>
+        <?php foreach ($aDados as $categoria): ?>
             <tr>
                 <td><?= $categoria["id"] ?></td>
                 <td><?= $categoria["descricao"] ?></td>
