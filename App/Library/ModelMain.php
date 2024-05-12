@@ -57,7 +57,7 @@ class ModelMain
         if ($this->db->dbNumeroLinhas($rsc) > 0) {
         return $this->db->dbBuscaArrayAll($rsc);
         } else {
-        return [];
+            return [];
         }
     }
 }

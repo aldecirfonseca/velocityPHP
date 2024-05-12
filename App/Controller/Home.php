@@ -10,6 +10,22 @@ class Home extends ControllerMain
         return $this->loadView("home");
     }
 
+    /**
+     * produto
+     *
+     * @return void
+     */
+    public function produto()
+    {
+        // Carregando o model Categoria 
+        $categoriaModel = $this->loadModel("Categoria");
+        
+        // Buscando a lista de categorias 
+        $aCategoria = $categoriaModel->lista("descricao");
+
+        return $this->loadView("produto", $aCategoria);
+    }
+
     public function contato()
     {
         return $this->loadView("contato");

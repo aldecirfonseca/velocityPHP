@@ -28,6 +28,26 @@ class ControllerMain
         }
     }
 
+
+    /**
+     * loadModel
+     *
+     * @param string $nomeModel 
+     * @return mixed
+     */
+    public function loadModel($nomeModel)
+    {
+        $nomeModel .= "Model";
+        $caminha = ".." . DS . "App" . DS . "Model" . DS;
+
+        if (file_exists($caminha . $nomeModel . '.php')) {
+            require_once $caminha . $nomeModel . ".php";
+            return new $nomeModel();
+        } else {
+            return null;
+        }
+    }
+
     /**
      * loadHelper
      *
