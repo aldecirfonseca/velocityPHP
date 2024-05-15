@@ -50,7 +50,7 @@ class Validator
                         break;
 
                     case "min" :                    
-                            
+                        
                         if (strlen(strip_tags($data[$ruleKey])) < $items[ 1 ] ){
                             $errors[$ruleKey] = "O campo <b>{$ruleValue['label']}</b> dever conter um mínimo " . $items[ 1 ] . " caracteres.";
                         }
@@ -64,7 +64,7 @@ class Validator
                         }
 
                         break;
-                            
+                        
                     default :
                         break;
                 }

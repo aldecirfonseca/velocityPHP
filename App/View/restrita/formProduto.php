@@ -49,25 +49,25 @@
             <div class="mb-3 col-sm-6 col-md-3">
                 <label for="saldoEmEstoque" class="form-label">Saldo Em Estoque</label>
                 <input type="text" class="form-control" name="saldoEmEstoque" id="saldoEmEstoque" 
-                    value="<?= formataValor(setValor('saldoEmEstoque'), 3) ?>" dir="rtl">
+                    value="<?= formataValor(setValor('saldoEmEstoque', 0), 3) ?>" dir="rtl">
             </div>
 
             <div class="mb-3 col-sm-6 col-md-3">
                 <label for="custoTotal" class="form-label">Custo Total</label>
                 <input type="text" class="form-control" name="custoTotal" id="custoTotal" 
-                    value="<?= formataValor(setValor('custoTotal')) ?>" dir="rtl">
+                    value="<?= formataValor(setValor('custoTotal', 0)) ?>" dir="rtl">
             </div>
 
             <div class="mb-3 col-sm-6 col-md-3">
                 <label for="precoVenda" class="form-label">Preço de Venda</label>
                 <input type="text" class="form-control" name="precoVenda" id="precoVenda" 
-                    value="<?= formataValor(setValor('precoVenda')) ?>" dir="rtl">
+                    value="<?= formataValor(setValor('precoVenda', 0)) ?>" dir="rtl">
             </div>
 
             <div class="mb-3 col-sm-6 col-md-3">
                 <label for="precoPromocao" class="form-label">Preço Promoção</label>
                 <input type="text" class="form-control" name="precoPromocao" id="precoPromocao" 
-                    value="<?= formataValor(setValor('precoPromocao')) ?>" dir="rtl">
+                    value="<?= formataValor(setValor('precoPromocao', 0)) ?>" dir="rtl">
             </div>
 
             <?php if (in_array($this->getAcao(), ['insert', 'update'])): ?>

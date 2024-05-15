@@ -12,8 +12,8 @@ Class CategoriaModel extends ModelMain
             'rules' => 'required|min:3|max:50'
         ],
         'statusRegistro' => [
-            'label' => 'Status Registro',
-            'rules' => 'required|integer'
+            'label' => 'Status',
+            'rules' => 'required|int'
         ]
     ];
 }

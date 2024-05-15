@@ -28,11 +28,7 @@ function getStatus($statusRegistro)
  */
 function formataValor($valor, $decimais = 2)
 {
-    if ($valor == "") {
-        return "0,". str_repeat("0", $decimais);
-    } else {
-        return number_format($valor, $decimais, ",", ".");
-    }
+    return number_format($valor, $decimais, ",", ".");
 }
 
 /**

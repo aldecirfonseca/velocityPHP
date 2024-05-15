@@ -95,7 +95,11 @@ class ControllerMain
 			require_once ".." . DS . "App" . DS . "View" . DS . "comuns" . DS . "cabecalho.php";
 		}
 
-		if (count($dados)) {
+		if (Session::get("inputs") != false) {
+            $dados = Session::getDestroy('inputs');
+        }
+
+		if (count($dados) > 0) {
 			$_POST = $dados;
 		}
 		

@@ -44,7 +44,7 @@ class Produto extends ControllerMain
 
         $DbDados = [];
 
-        if ( $this->getAcao() != 'new') {
+        if ($this->getAcao() != 'new') {
             $DbDados = $this->model->getById($this->getId());
         }
 

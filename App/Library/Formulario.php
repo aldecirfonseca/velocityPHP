@@ -156,6 +156,11 @@ class Formulario
             <script>
                 $(document).ready( function() {
                     $("#' . $table_id . '").DataTable( {
+                        "order": [],
+                        "columnDefs": [{
+                            "targets": "no-sort",
+                            "orderable": false,
+                        }],
                         language:   {
                                         "sEmptyTable":      "Nenhum registro encontrado",
                                         "sInfo":            "Mostrando de _START_ até _END_ de _TOTAL_ registros",

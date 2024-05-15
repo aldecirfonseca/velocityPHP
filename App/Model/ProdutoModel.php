@@ -6,7 +6,6 @@ Class ProdutoModel extends ModelMain
 {
     public $table = "produto";
 
-
     public $validationRules = [
         'descricao' => [
             'label' => 'Descrição',
@@ -18,11 +17,11 @@ Class ProdutoModel extends ModelMain
         ],
         'categoria_id' => [
             'label' => 'Categoria',
-            'rules' => 'required'
+            'rules' => 'required|int'
         ],
         'statusRegistro' => [
-            'label' => 'Status Registro',
-            'rules' => 'required|integer'
+            'label' => 'Status',
+            'rules' => 'required|int'
         ]
     ];
 
