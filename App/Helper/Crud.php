@@ -1,5 +1,7 @@
 <?php
 
+use App\Library\Session;
+
 /**
  * getStatus
  *
@@ -22,9 +24,40 @@ function getStatus($statusRegistro)
  *
  * @param float $valor 
  * @param int $decimais 
- * @return float
+ * @return string
  */
 function formataValor($valor, $decimais = 2)
 {
-    return number_format($valor, $decimais, ",", ".");
+    if ($valor == "") {
+        return "0,". str_repeat("0", $decimais);
+    } else {
+        return number_format($valor, $decimais, ",", ".");
+    }
+}
+
+/**
+ * strNumber
+ *
+ * @param string $valor 
+ * @return float
+ */
+function strNumber($valor) 
+{
+    return str_replace(",", ".", str_replace(".", "", $valor));
+}
+
+/**
+ * setValor
+ *
+ * @param string $campo 
+ * @param mixed $default 
+ * @return mixed
+ */
+function setValor($campo, $default = "")
+{
+    if (isset($_POST[$campo])) {
+        return $_POST[$campo];
+    } else {
+        return $default;
+    }
 }

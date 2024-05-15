@@ -1,11 +1,11 @@
 <?php
 
-/**
- * baseUrl
- *
- * @return string
- */
-function baseUrl()
-{
-    return $_ENV['BASEURL'];
-}
+    /**
+     * baseUrl
+     *
+     * @return string
+     */
+    function baseUrl()
+    {
+        return $_ENV['BASEURL'];
+    }

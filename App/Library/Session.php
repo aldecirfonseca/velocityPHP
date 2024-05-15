@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Library;
 
 class Session
 {
     /**
-     * set - Seta um valor para sessão
+     * set - Seta o valor para uma sessão
      *
      * @param string $key 
      * @param mixed $value 
@@ -17,10 +16,10 @@ class Session
     }
 
     /**
-     * get - Recupera o valor de uma sessão indicada em $key
+     * get - retorna o valor de uma sessão
      *
      * @param string $key 
-     * @return void
+     * @return mixed
      */
     static public function get($key)
     {
@@ -32,7 +31,7 @@ class Session
     }
 
     /**
-     * destroy - exclui uma sessão indicada na chave $key
+     * destroy - exclui uma sessão indica na chave $key
      *
      * @param string $key 
      * @return void
@@ -45,16 +44,16 @@ class Session
     }
 
     /**
-     * getDestroy - Recupera, exclui e retorna os dados de uma sessão
+     * getDestroy - recupera e exclui uma sessão informada em $key
      *
      * @param string $key 
-     * @return void
+     * @return mixed
      */
     static public function getDestroy($key)
     {
-        $ret = Session::get($key);
+        $valor = Session::get($key);
         Session::destroy($key);
 
-        return $ret;
+        return $valor;
     }
 }

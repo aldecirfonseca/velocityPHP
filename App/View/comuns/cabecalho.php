@@ -8,6 +8,7 @@
         <title>VelocityPHP</title>
 
         <link rel="stylesheet" href="<?= baseUrl() ?>assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?= baseUrl() ?>assets/vendors/fontawesome/css/all.min.css">
 
         <script src="<?= baseUrl() ?>assets/js/jquery-3.3.1.js"></script>
         <script src="<?= baseUrl() ?>assets/bootstrap/js/bootstrap.min.js"></script>

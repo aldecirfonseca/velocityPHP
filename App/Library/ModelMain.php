@@ -6,58 +6,95 @@ class ModelMain
 {
     protected $db;
     public $table;
+    public $validationRules;
 
-    /**
-     * construct
-     */
-    public function __construct() 
+    public function __construct()
     {
         $this->db = new Database(
-            $_ENV['DB_CONNECTION'],
-            $_ENV['DB_HOST'],
-            $_ENV['DB_PORT'],
-            $_ENV['DB_DATABASE'],
-            $_ENV['DB_USERNAME'],
+            $_ENV['DB_CONNECTION'], 
+            $_ENV['DB_HOST'], 
+            $_ENV['DB_PORT'], 
+            $_ENV['DB_DATABASE'], 
+            $_ENV['DB_USERNAME'], 
             $_ENV['DB_PASSWORD']
         );
+
+        $validationRules = [];
     }
 
     /**
-     * getById
+     * getId
      *
-     * @param int $id 
+     * @param string $table 
+     * @param integer $id 
      * @return array
      */
     public function getById($id)
     {
-        $rsc = $this->db->dbSelect(
-                            "SELECT * FROM {$this->table} WHERE id = ?",
-                            [$id]
-                        );
-                        
-        if ($this->db->dbNumeroLinhas($rsc) > 0) {
-            return $this->db->dbBuscaArray($rsc);
-        } else {
+        if ($id == 0) {
             return [];
+        } else {
+            return $this->db->select($this->table, "first", ['where' => ['id' => $id]]);
         }
     }
-
+    
     /**
      * lista
      *
      * @param string $orderBy 
-     * @return array
+     * @return void
      */
-    public function lista($orderBy = "id")
+    public function lista($orderBy = ['descricao'])
     {
-        $rsc = $this->db->dbSelect(
-                                "SELECT * FROM {$this->table} ORDER BY {$orderBy}"
-                            );
-        
-        if ($this->db->dbNumeroLinhas($rsc) > 0) {
-        return $this->db->dbBuscaArrayAll($rsc);
+        return $this->db->select($this->table, "all", ['orderby' => $orderBy]);
+    }
+
+    /**
+     * insert
+     *
+     * @param array $aCampos 
+     * @return bool
+     */
+    public function insert($aCampos)
+    {
+        if ($this->db->insert($this->table, $aCampos) > 0) {
+            return true;
         } else {
-            return [];
+            return false;
         }
     }
+
+    /**
+     * update
+     *
+     * @param array $aWhere 
+     * @param array $dados 
+     * @return void
+     */
+    public function update($aWhere, $dados)
+    {
+        if ($this->db->update($this->table, $aWhere, $dados) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+        /**
+     * delete
+     *
+     * @param integer $dados 
+     * @return boolean
+     */
+    public function delete($aWhere)
+    {
+        $rsc = $this->db->delete($this->table, $aWhere);
+
+        if ($rsc > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -2,9 +2,18 @@
 
 use App\Library\ModelMain;
 
-// App\Model\CategoriaModel.php
-
-class CategoriaModel extends ModelMain
+Class CategoriaModel extends ModelMain
 {
-    public $table = 'categoria';
+    public $table = "categoria";
+
+    public $validationRules = [
+        'descricao' => [
+            'label' => 'Descrição',
+            'rules' => 'required|min:3|max:50'
+        ],
+        'statusRegistro' => [
+            'label' => 'Status Registro',
+            'rules' => 'required|integer'
+        ]
+    ];
 }

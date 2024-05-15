@@ -2,97 +2,116 @@
 
 namespace App\Library;
 
-class ControllerMain
+class ControllerMain 
 {
-    public $dados;
-    public $model;
+	public $dados;
+	public $model;
+
+	/**
+	 * construct
+	 *
+	 * @param array $dados 
+	 */
+	public function __construct($dados)
+	{ 
+        $this->auxiliarConstruct($dados);
+	}
 
     /**
-     * construct
+     * auxiliarConstruct
      *
-     * @param array $dados 
+     * @param mixed $dados 
+     * @return void
      */
-    public function __construct($dados)
+    public function auxiliarConstruct($dados)
     {
-        $this->dados = $dados;
-        $this->loadHelper("Ambiente");
-        $this->loadHelper("Crud");
+		$this->dados = $dados;
+		$this->loadHelper(["Ambiente", "Crud"]);
 
-        // criando o objeto do model e conectando ao Database
+        // criando o objeto do Model e conectando a base de dados
+
         $cModel = $dados['model'] . "Model";
 
-        // verifica se o arquivo model existe para ser carrega
-        if (file_exists(".." . DS . "App" . DS . "Model" . DS . $cModel . ".php")) {
-            require_once ".." . DS . "App" . DS . "Model" . DS . $cModel . ".php";
-            $this->model = new $cModel();       // cria o objeto model
-        }
+		// verificando se o arquivo model existe para ser carregado
+		if (file_exists(".." . DS . "App" . DS . "Model" . DS . $cModel . ".php")) {
+			require_once ".." . DS . "App" . DS . "Model" . DS . $cModel . ".php";
+			$this->model = new $cModel(); // cria objeto model
+		}
     }
 
+	/**
+	 * loadModel
+	 *
+	 * @param string $nomeModel 
+	 * @return void|object
+	 */
+	public function loadModel($nomeModel)
+	{
+		$nomeModel .= "Model";
 
-    /**
-     * loadModel
-     *
-     * @param string $nomeModel 
-     * @return mixed
-     */
-    public function loadModel($nomeModel)
-    {
-        $nomeModel .= "Model";
-        $caminha = ".." . DS . "App" . DS . "Model" . DS;
+		if (file_exists(".." . DS . "App" . DS . "Model" . DS . $nomeModel . ".php")) {
+			require_once ".." . DS . "App" . DS . "Model" . DS . $nomeModel . ".php";
+			return new $nomeModel();
+		} else {
+			return null;
+		}
+	}
 
-        if (file_exists($caminha . $nomeModel . '.php')) {
-            require_once $caminha . $nomeModel . ".php";
-            return new $nomeModel();
-        } else {
-            return null;
-        }
-    }
+	/**
+	 * loadHelper
+	 *
+	 * @param string|array $nome
+	 * @return void
+	 */
+	public function loadHelper($nome)
+	{
+		if (gettype($nome) == "string") {
+			$nome = [$nome];
+		}
 
-    /**
-     * loadHelper
-     *
-     * @param string $nome 
-     * @return void
-     */
-    public function loadHelper($nome)
-    {
-        $nameFile = ".." . DS . "App" . DS . "Helper" . DS . "{$nome}.php";
+		foreach ($nome as $value) {
 
-        if (file_exists($nameFile)) {
-            require_once $nameFile;
-        }
-    }
+			$nameFile = ".." . DS . "App" . DS . "Helper" . DS . "{$value}.php";
 
-    /**
-     * loadView
-     *
-     * @param string $nomeView 
-     * @param array $dados 
-     * @param bool $exibeCabRodape 
-     * @return void
-     */
-    public function loadView($nomeView, $dados = [], $exibeCabRodape = true)
-    {
-        $aDados   = $dados;
-        $caminho = ".." . DS . "App" . DS . "View" . DS;
+			if (file_exists($nameFile)) {
+				require_once $nameFile;
+			}
+		}
+	}
 
-        // carrega o cabeçalho
-        if ($exibeCabRodape) {
-            require_once $caminho . 'comuns' . DS . "cabecalho.php";
-        }
+	/**
+	 * loadView - Carrega views
+	 *
+	 * @param string $nameView 
+	 * @param array $dados 
+	 * @return void
+	 */
+	public function loadView($nameView, $dados = [], $exibeCabRodape = true)
+	{
+		$aDados = $dados;
 
-        if (file_exists($caminho . $nomeView . ".php")) {
-            require_once $caminho . $nomeView . ".php";
-        } else {
-            require_once $caminho . "comuns" . DS . "erros.php";
-        }
+		// Carrega cabeçalho
+		if ($exibeCabRodape) {
+			require_once ".." . DS . "App" . DS . "View" . DS . "comuns" . DS . "cabecalho.php";
+		}
 
-        // carrega o rodape
-        if ($exibeCabRodape) {
-            require_once $caminho . 'comuns' . DS . "rodape.php";
-        }
-    }
+		if (count($dados)) {
+			$_POST = $dados;
+		}
+		
+		// Carrega a página
+		if (file_exists(".." . DS . "App" . DS . "View" . DS . $nameView . ".php")) {
+			require_once ".." . DS . "App" . DS . "View" . DS . $nameView . ".php";
+		} else {
+			require_once ".." . DS . "App" . DS . "View" . DS . "comuns" . DS . "erros.php";
+		}
 
+		// Carrega rodapé
+		if ($exibeCabRodape) {
+			require_once ".." . DS . "App" . DS . "View" . DS . "comuns" . DS . "rodape.php";
+		}
+	}
+		
     /**
      * getController
      *
@@ -133,9 +152,13 @@ class ControllerMain
      *
      * @return array
      */
-    public function getPost()
+    public function getPost($nameCampo = null)
     {
-        return $this->dados['post'];
+		if (is_null($nameCampo)) {
+			return $this->dados['post'];
+		} else {
+			return $this->dados['post'][$nameCampo];
+		}
     }
 
     /**
@@ -156,5 +179,21 @@ class ControllerMain
     public function getOutrosParametros()
     {
         return $this->dados['outrosParametros'];
+    }
+
+	/**
+     * getAdministrador
+     *
+     * @return boolean
+     */
+    public function getAdministrador()
+    {
+        if (Session::get("usuarioId") != "") {
+            if (Session::get("usuarioNivel") == 1) {
+                return true;
+            }            
+        }
+
+        return false;
     }
 }

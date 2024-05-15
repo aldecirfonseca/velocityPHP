@@ -84,6 +84,202 @@ class Database
     }
 
     /**
+     * getCampos
+     *
+     * @param array $campos 
+     * @param string $conector 
+     * @return array
+     */
+    protected function getCampos(array $campos, $conector = ",")
+    {
+        $save['sql'] = "";
+        $virgula = false;
+
+        foreach ($campos as $key => $value) {
+            $juncao = " " . $conector . " ";
+            $sinal = " = ";
+
+            if (strtoupper(substr(trim($key), 0, 2)) == "OR") {
+                $juncao = " OR ";
+                $key = substr(trim($key), 3);
+            }
+
+            if (strtoupper(substr(trim($key), strlen(trim($key)) -2, 2)) == "<>") {
+                $sinal = " <> ";
+                $key = trim(str_replace('<>' , "", $key));
+            }
+
+            $save['sql'] .= ($virgula ? $juncao : "") . "`" . $key . "`" . $sinal . " :" . $key . " ";
+            $save['dados'][":" . $key] = $value;
+            $virgula = true;
+        }
+
+        return $save;
+    }
+
+    /**
+     * insert
+     *
+     * @param string $table 
+     * @param array $campos 
+     * @return void
+     */
+    public function insert($table, $campos = [])
+    {
+        try {
+
+            $save = $this->getCampos($campos);
+            $fields = implode("` , `", array_keys($campos));
+            $values = implode(" , ", array_keys($save['dados']));
+            
+            $sql = 'INSERT INTO `' . $table . '` (`' . $fields . '`) VALUES (' . $values . ')';
+
+            $conexao = $this->connect();
+            $query = $conexao->prepare($sql);
+            $query->execute($save['dados']);
+            
+            $rs = $conexao->lastInsertId();
+
+            self::__destruct();
+
+        } catch (\Exception $exc) {
+            echo "Erro ao inserir registro, favor entrar em contato com o suporte técnico: ERROR: " . $exc->getTraceAsString();
+            exit;
+        }
+
+        return $rs;
+    }
+
+    public function update($table, $conditions, $campos)
+    {
+        try {
+
+            $save           = $this->getCampos($campos);
+            $condWhere      = $this->getCampos($conditions);
+            $save['save']   = array_merge($save['dados'], $condWhere['dados']);
+
+            $sql = "UPDATE `" . $table . "` SET " . $save['sql'] . " WHERE " . $condWhere['sql'] . "; ";
+        
+            $query = $this->connect()->prepare($sql);
+            $query->execute($save['save']);
+
+            $rs = $query->rowCount();
+
+            self::__destruct();
+
+            return $rs;
+
+        } catch (\Exception $exc) {
+            echo "Erro ao inserir registro, favor entrar em contato com o suporte técnico: ERROR: " . $exc->getTraceAsString();
+            exit;
+        }  
+    }
+
+    /**
+     * delete
+     *
+     * @param string $table 
+     * @param array $conditions 
+     * @return void
+     */
+    public function delete($table, $conditions)
+    {
+        try {
+
+            $save = $this->getCampos($conditions);
+            $sql = "DELETE FROM {$table} WHERE " . $save['sql'] . "; ";
+
+            $query = $this->connect()->prepare($sql);
+            $query->execute($save['dados']);
+
+            $rs = $query->rowCount();
+
+            self::__destruct();
+
+            if ($rs == []) {
+                return false;
+            } else {
+                return $rs;
+            }
+
+        } catch (\Exception $exc) {
+            echo "Erro ao inserir registro, favor entrar em contato com o suporte técnico: ERROR: " . $exc->getTraceAsString();
+            exit;
+        } 
+    }
+
+    /**
+     * select
+     *
+     * @param string $table 
+     * @param string $tipo 
+     * @param array $configs 
+     * @return mixed
+     */
+    public function select($table, $tipo = "all", array $configs = [])
+    {
+        $where['sql'] = "";
+        $where['dados'] = [];
+        $where['save'] = [];
+        $campos = "";
+        $sql = '';
+
+        // select
+
+        if (!isset($configs['campos'])) {
+            $campos = "*";
+        } else {
+            $campos = "`" . implode("`, `" , $configs['campos']) . "`";
+        }
+
+        // where
+
+        if (isset($configs['where'])) {
+            $ret = $this->getCampos($configs['where'], "AND");
+            $where['sql'] .= " WHERE " . $ret['sql'];
+            $where['save'] = array_merge($ret['dados'], $where['dados']);
+        }
+
+        // group by
+        if (isset($configs['groupby'])) {
+            $groupby = "`" . implode("`, `" , $configs['groupby']) . "`";
+        }
+
+        // order by
+
+        if (isset($configs['orderby'])) {
+
+            if (gettype($configs['orderby']) == "string") {
+                $configs['orderby'] = [$configs['orderby']];
+            }
+
+            $orderby = "`" . implode("`, `" , $configs['orderby']) . "`";
+            $orderby = str_replace(" DESC`", "` DESC", $orderby);
+        }
+        
+        // executar o camando e retornar os dados
+
+        $sql .= "SELECT " . $campos;
+        $sql .= " FROM `" . $table . "`";
+        $sql .= $where['sql'];
+        $sql .= (!empty($groupby) ? " GROUP BY " . $groupby : '');
+        $sql .= (!empty($orderby) ? " ORDER BY ". $orderby : '');
+
+        //
+
+        $query = $this->connect()->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL]);
+        $rscDados = $query->execute($where['save']);
+
+        if ($tipo == "first") {
+            return $this->dbBuscaArray($query);
+        } elseif ($tipo == "all") {
+            return $this->dbBuscaArrayAll($query);
+        } elseif ($tipo == "count") {
+            return $this->dbNumeroLinhas($query);
+        }
+    }
+
+    /**
      * Método select que retorna um array de objetos
     *   @param string $sql
     *   @param array $params
@@ -154,6 +350,7 @@ class Database
     
     public function dbDelete($sql,$params=null)
     {
+        
         $query=$this->connect()->prepare($sql);
         
         try {
@@ -171,7 +368,9 @@ class Database
             return false;
         } else {
             return $rs;
-        }     
+        }
+        
+        
     }
 
 

@@ -1,11 +1,13 @@
-<div class="row">
-    <div class="col-12 mb-2">
-        <h2>Categorias</h2>
-    </div>
-</div>
+<?php
 
-<table class="table table-bordered table-condensed table-striped">
-    <thead class="table-dark">
+use App\Library\Formulario;
+
+echo Formulario::titulo('Categorias');
+
+?>
+
+<table id="listaCategoria" class="table table-bordered table-striped table-hover table-sm">
+    <thead>
         <tr>
             <th>Id</th>
             <th>Descrição</th>
@@ -14,17 +16,19 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($aDados as $categoria): ?>
+        <?php foreach ($aDados as $value) : ?>
             <tr>
-                <td><?= $categoria["id"] ?></td>
-                <td><?= $categoria["descricao"] ?></td>
-                <td><?= getStatus($categoria["statusRegistro"]) ?></td>
+                <td><?= $value['id'] ?></td>
+                <td><?= $value['descricao'] ?></td>
+                <td><?= getStatus($value['statusRegistro']) ?></td>
                 <td>
-                    <a href="<?= baseUrl() ?>Categoria/form/view/<?= $categoria['id'] ?>" class="btn btn-secondary">Visualizar</a>&nbsp;
-                    <a href="#" class="btn btn-info">Alterar</a>&nbsp;
-                    <a href="#" class="btn btn-danger">Excluir</a>
+                    <?= Formulario::botao("view", $value['id']) ?>
+                    <?= Formulario::botao("update", $value['id']) ?>
+                    <?= Formulario::botao("delete", $value['id']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+
+<?= Formulario::getDataTables("listaCategoria"); ?>
