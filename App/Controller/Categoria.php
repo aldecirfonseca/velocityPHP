@@ -18,7 +18,7 @@ class Categoria extends ControllerMain
 
         // Somente pode ser acessado por usuários adminsitradores
         if (!$this->getAdministrador()) {
-            //return Redirect::page("Home");
+            return Redirect::page("Home");
         }
     }
 

@@ -63,9 +63,23 @@ class Database
     { 
         try {
             if ( $this->getDBDrive() == 'mysql' ) {            // MySQL
-                $this->conexao = new PDO($this->getDBDrive().":host=".$this->getHost().";port=".$this->getPort().";dbname=".$this->getDB(), $this->getUser(), $this->getPassword());
+
+                $this->conexao = new PDO(
+                                            $this->getDBDrive().":host=".$this->getHost().";port=".$this->getPort().";dbname=".$this->getDB(), 
+                                            $this->getUser(), 
+                                            $this->getPassword(), 
+                                            [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]
+                                        );
+
             } else if ( $this->getDBDrive() == 'sqlsrv' ) {    // SQL Server
-                $this->conexao = new PDO($this->getDBDrive().":Server=".$this->getHost().",".$this->getPort().";DataBase=".$this->getDB(), $this->getUser(), $this->getPassword());
+
+                $this->conexao = new PDO(
+                                            $this->getDBDrive().":Server=".$this->getHost().",".$this->getPort().";DataBase=".$this->getDB(), 
+                                            $this->getUser(), 
+                                            $this->getPassword(), 
+                                            [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]
+                                        );
+
             }
 
             $this->conexao->setAttribute(PDO::ATTR_ERRMODE, $this->conexao::ERRMODE_EXCEPTION);

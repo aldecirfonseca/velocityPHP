@@ -1,13 +1,20 @@
 <?php
-// App\Controller\Home.php
 
 use App\Library\ControllerMain;
 
 class Home extends ControllerMain
 {
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index()
     {
-        return $this->loadView("home");
+        $categoria = $this->loadModel("Categoria");
+        $this->dados['aCategoria'] = $categoria->lista();
+    
+        $this->loadView("home", $this->dados);
     }
 
     /**
@@ -17,17 +24,52 @@ class Home extends ControllerMain
      */
     public function produto()
     {
-        // Carregando o model Categoria 
-        $categoriaModel = $this->loadModel("Categoria");
-        
-        // Buscando a lista de categorias 
-        $aCategoria = $categoriaModel->lista("descricao");
+        $CategoriaModel = $this->loadModel("categoria");
+
+        $aCategoria = $CategoriaModel->lista();
 
         return $this->loadView("produto", $aCategoria);
     }
 
+    /**
+     * contato
+     *
+     * @return void
+     */
     public function contato()
     {
-        return $this->loadView("contato");
+        $this->loadView("contato");
+    }
+
+    /**
+     * login
+     *
+     * @return void
+     */
+    public function login()
+    {
+        return $this->loadView('usuario/login');
+    }
+
+    /**
+     * homeAdmin
+     *
+     * @return void
+     */
+    public function homeAdmin()
+    {
+        return $this->loadView("restrita/homeAdmin");
+    }
+
+    /**
+     * criarConta
+     *
+     * @return void
+     */
+    public function criarConta()
+    {
+        $this->loadHelper('Formulario');
+        
+        return $this->loadView("usuario/formCriarConta", []);
     }
 }

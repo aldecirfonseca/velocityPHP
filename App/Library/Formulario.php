@@ -26,7 +26,7 @@ class Formulario
 
                 $html .= '<div class="col-10"><h2>' . $titulo . '</h2></div>';
 
-                $html .= '<div class="col-2">';
+                $html .= '<div class="col-2 text-end">';
 
                     if ($btNew) {
                         $html .= Formulario::botao('insert');

@@ -1,3 +1,9 @@
+<?php
+
+use App\Library\Session;
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,22 +33,41 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="<?= baseUrl() ?>">Home</a>
+                            <a class="nav-link active" aria-current="page" href="<?= baseUrl() ?>/Home/homeAdmin">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= baseUrl() ?>/Home/produto">Produto</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Area Administrativa
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="<?= baseUrl() ?>Categoria">Categoria</a></li>
-                                <li><a class="dropdown-item" href="<?= baseUrl() ?>Produto">Produto</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Usuário</a></li>
-                            </ul>
-                        </li>
+
+                        <?php if (Session::get('usuarioId') != false): ?>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Area Administrativa
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                    <li><a class="dropdown-item" href="<?= baseUrl() ?>Login/signOut">Sair</a></li>
+                                    <li><a class="dropdown-item" href="<?= baseUrl() ?>Usuario/trocaSenha">Trocar a Senha</a></li>
+                                    
+                                    <?php if (Session::get('usuarioNivel') == 1): ?>
+                                        <li><a class="dropdown-item" href="<?= baseUrl() ?>Usuario">Usuário</a></li>
+                                    <?php endif; ?>
+
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="<?= baseUrl() ?>Categoria">Categoria</a></li>
+                                    <li><a class="dropdown-item" href="<?= baseUrl() ?>Produto">Produto</a></li>
+
+                                </ul>
+                            </li>
+
+                        <?php else: ?>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= baseUrl() ?>Home/Login">Login</a>
+                            </li>
+
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
