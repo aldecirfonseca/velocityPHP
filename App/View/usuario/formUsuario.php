@@ -67,10 +67,10 @@ use App\Library\Formulario;
             <input type="hidden" name="id" value="<?= setValor('id') ?>">
 
             <div class="form-group col-12 col-md-4 mt-3">
+                <a href="<?= baseUrl() ?>/Usuario" class="btn btn-secondary">Voltar</a>
                 <?php if ($this->getAcao() != "view"): ?>
                     <button type="submit" value="submit" id="btGravar" class="btn btn-primary">Gravar</button>
                 <?php endif; ?>
-                <a href="<?= baseUrl() ?>/Usuario" class="btn btn-secondary">Voltar</a>
             </div>
 
         </div>

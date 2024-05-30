@@ -19,7 +19,7 @@ class Usuario extends ControllerMain
             return Redirect::page("Home");
         }
 
-        $this->loadView("usuario/listaUsuario", $this->model->getLista());
+        return $this->loadView("usuario/listaUsuario", $this->model->getLista());
     }
 
     /**
@@ -36,7 +36,7 @@ class Usuario extends ControllerMain
             $dbDados = $this->model->getById($this->getId());
         }
 
-        $this->loadView('usuario/formUsuario', $dbDados);
+        return $this->loadView('usuario/formUsuario', $dbDados);
     }
 
     /**
@@ -118,7 +118,7 @@ class Usuario extends ControllerMain
      */
     public function trocaSenha()
     {
-        $this->loadView("usuario/formTrocaSenha");
+        return $this->loadView("usuario/formTrocaSenha");
     }
 
     /**
