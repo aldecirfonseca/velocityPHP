@@ -169,7 +169,7 @@ class Database
         try {
 
             $save           = $this->getCampos($campos);
-            $condWhere      = $this->getCampos($conditions);
+            $condWhere      = $this->getCampos($conditions, " AND ");
             $save['save']   = array_merge($save['dados'], $condWhere['dados']);
 
             $sql = "UPDATE `" . $table . "` SET " . $save['sql'] . " WHERE " . $condWhere['sql'] . "; ";
@@ -344,7 +344,7 @@ class Database
     public function dbUpdate( $sql , $params = null )
     {
         try {
-            $query=$this->connect()->prepare($sql);
+            $query = $this->connect()->prepare($sql);
             $query->execute($params);
             
             $rs = $query->rowCount();// or die(print_r($query->errorInfo(), true));

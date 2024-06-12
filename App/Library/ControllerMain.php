@@ -182,7 +182,7 @@ class ControllerMain
      */
     public function getOutrosParametros()
     {
-        return $this->dados['outrosParametros'];
+        return $this->dados['OutrosParametros'];
     }
 
 	/**
